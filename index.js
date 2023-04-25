@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
     // And then takes THAT promise and does things with the json data.
     .then(data => {
       res.send(`
-        <h1>Assignment 3 Ready To Go!</h1>
+        <h1>WeatherApp Ready To Go!</h1>
         <img src='${data[0].url}'>
       `);
     })
