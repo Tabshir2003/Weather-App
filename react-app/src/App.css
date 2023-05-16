@@ -36,12 +36,13 @@
 }
 
 .prompt {
-  color: red;
+  color: whitesmoke;
+  font-size: 20px;
 }
 
 .five-day {
   font-size: 20px;
-  color: blue;
+  color: yellow;
   display: flex;
   justify-content: space-evenly;
 }
@@ -54,6 +55,7 @@
   margin: 0 auto; 
   max-width: 600px; 
   padding: 20px; 
+  
 }
 
 
@@ -95,4 +97,15 @@ button:disabled:hover {
 .weather-app-heading{
   font-weight: bold;
   font-size: 80px;
+}
+
+p.error-message {
+  font-size: 40px;
+  font-weight: bold;
+  color: red;
+}
+
+.five-day-header{
+  font-size: 35px;
+  color: darkgoldenrod
 }
