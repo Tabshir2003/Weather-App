@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+#temperature{
+  font-size: 40px;
+  color: blue;
+}
+
+#wind-speed{
+  font-size: 40px;
+  color: blue;
+}
+
+#humidity{
+  font-size: 40px;
+  color: blue;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
