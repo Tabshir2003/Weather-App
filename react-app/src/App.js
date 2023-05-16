@@ -4,6 +4,7 @@ import "./App.css"; // Import the App.css file
 function App() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
+  const [forecastData, setForecastData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -19,7 +20,7 @@ function App() {
     event.preventDefault();
     setIsLoading(true);
     setError(null);
-
+  
     fetch(`http://localhost:3001/current-weather/${city}`)
       .then((response) => {
         if (!response.ok) {
@@ -35,14 +36,32 @@ function App() {
           windSpeed: data.wind.speed,
           humidity: data.main.humidity,
         });
-        setIsLoading(false);
       })
       .catch((error) => {
         console.log(error);
-        setIsLoading(false);
         setError(error.message);
       });
+  
+    fetch(`http://localhost:3001/five-weather/${city}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch forecast data.");
+        }
+        return response.json(); // Convert response to JSON
+      })
+      .then((data) => {
+        const filteredForecastData = data.list.filter((forecast) => forecast.dt_txt.includes("12:00:00"));
+        setForecastData(filteredForecastData);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error.message);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
+  
 
   return (
     <div className="App">
@@ -61,6 +80,19 @@ function App() {
           <div id="temperature">Temperature: {weatherData.temperature}°F</div>
           <div id="wind-speed">Wind Speed: {weatherData.windSpeed}</div>
           <div id="humidity">Humidity: {weatherData.humidity}</div>
+        </div>
+      )}
+      {forecastData.length > 0 && (
+        <div>
+          <h2>5-Day Weather Forecast</h2>
+          <div className="five-day">
+            {forecastData.map((forecast) => (
+              <div key={forecast.dt}>
+                <div>Date: {forecast.dt_txt.slice(0, 10)}</div>
+                <div>Temperature: {convertKelvinToFahrenheit(forecast.main.temp).toFixed(2)}°F</div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

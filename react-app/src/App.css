@@ -58,3 +58,10 @@
   align-items: center;
   margin-top: 20px;
 }
+
+.five-day {
+  font-size: 20px;
+  color: blue;
+  display: flex;
+  justify-content: space-evenly;
+}
