@@ -15,17 +15,17 @@
 
 #temperature {
   font-size: 40px;
-  color: blue;
+  color: rgb(41, 89, 162);
 }
 
 #wind-speed {
   font-size: 40px;
-  color: blue;
+  color: rgb(41, 89, 162);
 }
 
 #humidity {
   font-size: 40px;
-  color: blue;
+  color: rgb(41, 89, 162);
 }
 
 .search-form {
@@ -40,25 +40,31 @@
   font-size: 20px;
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 40vh;
+}
+
 .five-day {
   font-size: 20px;
-  color: yellow;
+  color: rgb(41, 89, 162);
+  background: rgb(125, 181, 255);
   display: flex;
   justify-content: space-evenly;
+  margin-top: auto;
 }
 
 .current-weather {
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: aqua;
+
   margin: 0 auto; 
   max-width: 600px; 
   padding: 20px; 
   
 }
-
-
 
 form {
   display: flex;
@@ -79,7 +85,7 @@ button {
   font-size: 16px;
   border: none;
   border-radius: 4px;
-  background-color: #4caf50;
+  background-color: #0b366f;
   color: white;
   cursor: pointer;
 }
@@ -105,7 +111,12 @@ p.error-message {
   color: red;
 }
 
-.five-day-header{
+.five-day-header {
   font-size: 35px;
-  color: darkgoldenrod
+  color: rgb(28, 27, 75); 
+  margin-bottom: 20px;
+}
+
+.forecast-container {
+  margin-top: 200px; 
 }

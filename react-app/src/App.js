@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import { MongoClient } from "mongodb";
 import "./App.css"; // Import the App.css file
 
+
 function App() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
@@ -70,6 +71,7 @@ function App() {
   
 
   return (
+
     <div className="App">
       <div className="weather-app-heading">Weather App</div>
       <form className="search-form" onSubmit={handleSubmit}>
@@ -91,6 +93,8 @@ function App() {
       )}
       {forecastData.length > 0 && (
         <div>
+          <div className="wrapper">
+          <div className="forecast-container">
           <div className= 'five-day-header'>5-Day Weather Forecast</div>
           <div className="five-day">
             {forecastData.map((forecast) => (
@@ -100,6 +104,8 @@ function App() {
               </div>
             ))}
           </div>
+        </div>
+        </div>
         </div>
       )}
     </div>
