@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import cors from 'cors';
 
 const app = express();
-
+app.use(express.static('public')); 
 app.use(cors()); // Add this line to enable CORS
 
 // This allows us to parse JSON data from the request body (if any).
