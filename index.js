@@ -1,10 +1,23 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
-
+import mongoose from 'mongoose'; 
 const app = express();
 app.use(express.static('public'));
 app.use(cors());
+
+const uri = "mongodb+srv://web-dev:X5zV8TlnsIvOSH4C@weather-app.03nzmks.mongodb.net/?retryWrites=true&w=majority";
+async function connect(){
+  try{
+    await mongoose.connect(uri); 
+    console.log("Connected to MongoDB"); 
+  }
+  catch(error){
+    console.error(error); 
+  }
+}
+
+connect(); 
 
 // This allows us to parse JSON data from the request body (if any).
 app.use(express.json());
