@@ -20,7 +20,7 @@ function App() {
     setIsLoading(true);
     setError(null);
 
-    fetch(`http://localhost:3001/weather/${city}`)
+    fetch(`http://localhost:3001/current-weather/${city}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch weather data.");
