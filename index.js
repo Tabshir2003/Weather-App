@@ -1,13 +1,16 @@
 import express from 'express';
 import fetch from 'node-fetch';
+import cors from 'cors';
 
 const app = express();
+
+app.use(cors()); // Add this line to enable CORS
+
 // This allows us to parse JSON data from the request body (if any).
 app.use(express.json())
-const PORT = 3000;
+const PORT = 3001;
 
 // This is your root route. Just to used to ensure your ExpressJS server is up and running.
-// I've also added an example using fetch from 'node-fetch' to get some data another, unrelated, api.
 app.get('/', (req, res) => {
   fetch('https://api.thecatapi.com/v1/images/search')
     // This takes the raw response from the fetch promise and parses it to json data format.
@@ -37,5 +40,5 @@ app.get("/weather/:city", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`ExpressJS server listening on port ${PORT}`);
-  })
+  console.log(`ExpressJS server listening on port ${PORT}`);
+});
