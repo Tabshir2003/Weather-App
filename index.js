@@ -8,12 +8,58 @@ app.use(cors());
 
 const uri = "mongodb+srv://web-dev:X5zV8TlnsIvOSH4C@weather-app.03nzmks.mongodb.net/?retryWrites=true&w=majority";
 async function connect(){
-  try{
-    await mongoose.connect(uri); 
-    console.log("Connected to MongoDB"); 
-  }
-  catch(error){
-    console.error(error); 
+  try {
+    await mongoose.connect(uri);
+    console.log("Connected to MongoDB");
+
+    // Define the weather data schema
+    const weatherSchema = new mongoose.Schema({
+      city: { type: String, required: true },
+      temperature: { type: Number, required: true },
+      humidity: { type: Number, required: true },
+      timestamp: { type: Date, default: Date.now }
+    });
+
+    // Create the Weather model
+    const Weather = mongoose.model('Weather', weatherSchema);
+
+    // Array of cities
+    const cities = ['New York', 'London', 'Tokyo']; // Add more cities as needed
+
+    // Fetch weather data for each city
+    const apiKey = '406a3468740e62be7410c1adc2da1810'; // Replace with your OpenWeatherMap API key
+
+    const promises = cities.map(city =>
+      fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
+        .then(response => response.json())
+        .then(weatherData => {
+          const temperature = weatherData.main.temp;
+          const humidity = weatherData.main.humidity;
+
+          // Save weather data to MongoDB
+          const newWeatherData = new Weather({
+            city: city,
+            temperature: temperature,
+            humidity: humidity
+          });
+
+          return newWeatherData.save();
+        })
+        .then(() => {
+          console.log(`Weather data saved for ${city}`);
+        })
+        .catch(error => {
+          console.error(`Error saving weather data for ${city}:`, error);
+        })
+    );
+
+    await Promise.all(promises);
+    console.log('All weather data saved to MongoDB');
+  } catch (error) {
+    console.error(error);
+  } finally {
+    mongoose.disconnect();
+    console.log("Disconnected from MongoDB");
   }
 }
 
