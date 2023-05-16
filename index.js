@@ -40,8 +40,8 @@ app.get('/', (req, res) => {
     })
 });
 
-// GET Request to get all the JSON data retrieved by city name.
-app.get('/weather/:city', (req, res) => {
+// GET Request to get all the JSON data retrieved by city name for CURRENT WEATHER.
+app.get('/current-weather/:city', (req, res) => {
   const { city } = req.params;
   const apiKey = '406a3468740e62be7410c1adc2da1810';
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
@@ -53,6 +53,37 @@ app.get('/weather/:city', (req, res) => {
       console.log(error);
       res.status(500).send('Error retrieving weather data');
     });
+});
+
+app.get('/five-weather/:city', async (req, res) => {
+  const city = req.params.city;
+  const apiKey = '406a3468740e62be7410c1adc2da1810';
+
+  try {
+    // Step 1: Search for the city and retrieve latitude and longitude
+    const geocodingUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
+    const geocodingResponse = await fetch(geocodingUrl);
+    const geocodingData = await geocodingResponse.json();
+
+    if (geocodingData.length === 0) {
+      return res.status(404).json({ message: 'City not found' });
+    }
+
+    const { lat, lon } = geocodingData[0];
+
+    // Step 2: Get the 5-day weather forecast
+    const forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+    const forecastResponse = await fetch(forecastUrl);
+    const forecastData = await forecastResponse.json();
+
+    const weatherForecast = forecastData;
+    // Process the weather forecast data as needed
+
+    res.json(weatherForecast);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
 });
 
 app.listen(PORT, () => {
