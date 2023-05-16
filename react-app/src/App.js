@@ -65,18 +65,19 @@ function App() {
 
   return (
     <div className="App">
+      <div className="weather-app-heading">Weather App</div>
       <form className="search-form" onSubmit={handleSubmit}>
-        <label>
+        <div className="prompt">
           Enter a city:
           <input type="text" value={city} onChange={handleCityChange} />
-        </label>
-        <button type="submit" disabled={!city || isLoading}>
+          <button type="submit" disabled={!city || isLoading}>
           {isLoading ? "Loading..." : "Search"}
-        </button>
+          </button>
+        </div>
       </form>
       {error && <p>{error}</p>}
       {weatherData && (
-        <div>
+        <div className="current-weather">
           <div id="temperature">Temperature: {weatherData.temperature}°F</div>
           <div id="wind-speed">Wind Speed: {weatherData.windSpeed}</div>
           <div id="humidity">Humidity: {weatherData.humidity}</div>
@@ -99,4 +100,4 @@ function App() {
   );
 }
 
-export default App;
+export default App
