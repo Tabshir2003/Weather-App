@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MongoClient } from "mongodb";
+// import { MongoClient } from "mongodb";
 import "./App.css"; // Import the App.css file
 
 function App() {
@@ -25,11 +25,15 @@ function App() {
     fetch(`http://localhost:3001/current-weather/${city}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to fetch weather data.");
+          throw new Error("Failed to fetch weather data. API potentailly DOWN!"); // Set specific error message
         }
         return response.json();
       })
       .then((data) => {
+        if (!data.main || !data.main.temp || !data.wind || !data.wind.speed) {
+          throw new Error("Failed to fetch weather data. City is possibly INVALID!"); // Check for required properties
+        }
+  
         const temperatureInKelvin = data.main.temp;
         const temperatureInFahrenheit = convertKelvinToFahrenheit(temperatureInKelvin).toFixed(2);
         setWeatherData({
@@ -46,9 +50,9 @@ function App() {
     fetch(`http://localhost:3001/five-weather/${city}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to fetch forecast data.");
+          throw new Error("Failed to fetch forecast data. API potentailly DOWN!");
         }
-        return response.json(); // Convert response to JSON
+        return response.json();
       })
       .then((data) => {
         const filteredForecastData = data.list.filter((forecast) => forecast.dt_txt.includes("12:00:00"));
@@ -63,6 +67,7 @@ function App() {
       });
   }
   
+  
 
   return (
     <div className="App">
@@ -72,11 +77,11 @@ function App() {
           Enter a city:
           <input type="text" value={city} onChange={handleCityChange} />
           <button type="submit" disabled={!city || isLoading}>
-          {isLoading ? "Loading..." : "Search"}
+            {isLoading ? "Loading..." : "Search"}
           </button>
         </div>
       </form>
-      {error && <p>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       {weatherData && (
         <div className="current-weather">
           <div id="temperature">Temperature: {weatherData.temperature}°F</div>
@@ -86,7 +91,7 @@ function App() {
       )}
       {forecastData.length > 0 && (
         <div>
-          <h2>5-Day Weather Forecast</h2>
+          <div className= 'five-day-header'>5-Day Weather Forecast</div>
           <div className="five-day">
             {forecastData.map((forecast) => (
               <div key={forecast.dt}>
