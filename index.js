@@ -2,6 +2,7 @@ import express from 'express';
 import fetch from 'node-fetch';
 
 const app = express();
+app.use(express.static('public'));
 // This allows us to parse JSON data from the request body (if any).
 app.use(express.json())
 const PORT = 3000;
