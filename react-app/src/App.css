@@ -165,6 +165,27 @@ p.error-message {
   margin-top: 200px; 
 }
 
+.recent-cities-header{
+  font-size: 35px;
+  color: rgb(28, 27, 75);
+  margin-bottom: 20px;
+}
+
+.recent-cities {
+  font-size: 20px;
+  color: black;
+  background: rgb(255, 255, 255, 0.2);
+  backdrop-filter: blur(2px) saturate(180%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: auto;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50vh;
+}
+
 /*img{
   width: 80px;
     <img className = "weather-app-heading" src={require("./cloud-drizzle-lightning-moon.png")}/>
