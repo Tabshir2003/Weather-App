@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { MongoClient } from "mongodb";
 import "./App.css"; // Import the App.css file
 
 function App() {
@@ -25,13 +24,13 @@ function App() {
     fetch(`http://localhost:3001/current-weather/${city}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to fetch weather data. API potentailly DOWN!"); // Set specific error message
+          throw new Error("Failed to fetch weather data."); // Set specific error message
         }
         return response.json();
       })
       .then((data) => {
         if (!data.main || !data.main.temp || !data.wind || !data.wind.speed) {
-          throw new Error("Failed to fetch weather data. City is possibly INVALID!"); // Check for required properties
+          throw new Error("Failed to fetch weather data."); // Check for required properties
         }
   
         const temperatureInKelvin = data.main.temp;
@@ -50,7 +49,7 @@ function App() {
     fetch(`http://localhost:3001/five-weather/${city}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to fetch forecast data. API potentailly DOWN!");
+          throw new Error("Failed to fetch forecast data.");
         }
         return response.json();
       })
