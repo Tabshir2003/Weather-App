@@ -50,7 +50,7 @@ function App() {
     fetch(`http://localhost:3001/five-weather/${city}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to fetch forecast data.");
+          throw new Error("Failed to fetch weather data.");
         }
         return response.json();
       })
