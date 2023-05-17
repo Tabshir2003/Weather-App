@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
-
+require('./background.png'); 
 function App() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
@@ -83,16 +83,18 @@ function App() {
   }, []);
   return (
     <div className="App">
-      <div className="weather-app-heading">Weather App</div>
-      <form className="search-form" onSubmit={handleSubmit}>
+      <div className="weather-app-heading" id="h1-heading">Weather App</div>
+      <div className="center">
+      <form action="" className="search-form" onSubmit={handleSubmit}>
         <div className="prompt">
-          Enter a city:
+          Enter a city:  
           <input type="text" value={city} onChange={handleCityChange} />
           <button type="submit" disabled={!city || isLoading}>
             {isLoading ? "Loading..." : "Search"}
           </button>
         </div>
       </form>
+      </div>
       {error && <p className="error-message">{error}</p>}
       {weatherData && (
         <div className="current-weather">
@@ -107,7 +109,7 @@ function App() {
           <div className="five-day">
             {forecastData.map((forecast) => (
               <div key={forecast.dt}>
-                <div>Date: {forecast.dt_txt.slice(0, 10)}</div>
+                <div>Date: {(forecast.dt_txt.slice(0, 10))}</div>
                 <div>Temperature: {convertKelvinToFahrenheit(forecast.main.temp).toFixed(2)}°F</div>
               </div>
             ))}

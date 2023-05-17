@@ -77,6 +77,7 @@ app.get('/current-weather/:city', async (req, res) => {
     .then(data => {
       const recentCity = new RecentCity({ city });
       recentCity.save()
+
         .then(savedCity => {
           console.log('Saved recent city:', savedCity);
         })

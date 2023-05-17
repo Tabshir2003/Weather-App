@@ -1,5 +1,13 @@
 .App {
   text-align: center;
+  background-image: linear-gradient(rgba(95, 110, 193, 0.9), rgba(106, 112, 145, 0.429)), url(./background.png); 
+  background-position: center;
+  background-size: cover;
+  width: 100%; 
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+ 
 }
 
 .App-header {
@@ -15,29 +23,55 @@
 
 #temperature {
   font-size: 40px;
-  color: rgb(41, 89, 162);
+  color: #282c34;
 }
 
 #wind-speed {
   font-size: 40px;
-  color: rgb(41, 89, 162);
+  color: #282c34;
 }
 
 #humidity {
   font-size: 40px;
-  color: rgb(41, 89, 162);
+  color: #282c34;
 }
 
 .search-form {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   margin-top: 20px;
+  width: 100%; 
+  max-width: 700px; 
+  height: 30px;
+  padding: 10px 20px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input[type="text"] {
+  background: transparent;
+  background: rgb(255, 255, 255, 0.2);
+  border-radius: 60px;
+  padding: 10px 20px;
+  color:whitesmoke; 
+  font-size: 20px; 
+  width: 50%; 
+  height: 30px;
+  max-width: 550px; 
+  border: transparent;
+  backdrop-filter: blur(4px) saturate(180%);
 }
 
 .prompt {
   color: whitesmoke;
   font-size: 20px;
+  width: 100%;
+}
+
+.center{
+  align-content: center;
+  display: flex;
+  justify-content: center;
+  
 }
 
 .wrapper {
@@ -48,8 +82,9 @@
 
 .five-day {
   font-size: 20px;
-  color: rgb(41, 89, 162);
-  background: rgb(125, 181, 255);
+  color: black;
+  background: rgb(255, 255, 255, 0.2);
+  backdrop-filter: blur(2px) saturate(180%);
   display: flex;
   justify-content: space-evenly;
   margin-top: auto;
@@ -59,7 +94,6 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-
   margin: 0 auto; 
   max-width: 600px; 
   padding: 20px; 
@@ -73,21 +107,27 @@ form {
   margin-bottom: 20px;
 }
 
-input[type="text"] {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
 
 button {
   padding: 10px 20px;
   font-size: 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 70%; 
   background-color: #0b366f;
   color: white;
   cursor: pointer;
+  width: 90px; 
+}
+
+#h1-heading{
+  transition-property: transform; 
+  transition-duration: 0.3s;
+  transition-timing-function: linear;
+  transition-delay: 0s; 
+}
+
+#h1-heading:hover{
+  transform: translateY(-10px)
 }
 
 button:disabled {
@@ -100,9 +140,12 @@ button:disabled:hover {
   color: #f1f1f1;
 }
 
+
 .weather-app-heading{
   font-weight: bold;
   font-size: 80px;
+  display: inline-block;
+
 }
 
 p.error-message {
@@ -115,8 +158,25 @@ p.error-message {
   font-size: 35px;
   color: rgb(28, 27, 75); 
   margin-bottom: 20px;
+  display: grid; 
 }
 
 .forecast-container {
   margin-top: 200px; 
 }
+
+/*img{
+  width: 80px;
+    <img className = "weather-app-heading" src={require("./cloud-drizzle-lightning-moon.png")}/>
+      <div className="weather-app-heading" id="h1-heading">Weather App</div>
+      <img className = "weather-app-heading" src={require("./cloud.png")}/>
+
+      input[type="text"] {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%; 
+  background: rgb(255, 255, 255, 0.2);
+  border-radius: 60px;
+  padding: 10px 20px; 
+}
+}*/

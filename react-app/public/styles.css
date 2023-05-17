@@ -1,12 +1,17 @@
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,100&display=swap');
 
 body {
-    background:#5892d3 ;
-    font-family: Arial, sans-serif;
+    /*background:#5892d3 ;*/
+    font-family: 'Poppins', sans-serif;
     color: rgb(16, 49, 84);
+    background-image: linear-gradient((rgba(0,8,51,0.9), rgba(0,8, 51, 0.9)), url(./wallpaper.jpg)); 
+    background-position: center;
+    background-size: cover;
   }
   
   h1 {
-    color: rgb(16, 49, 84);
+    color: rgb(0, 0, 0);
+    /* color: rgb(16, 49, 84) */
   }
   
   
