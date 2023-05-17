@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import "./App.css"; // Import the App.css file
+import React, { useState, useEffect } from "react";
+import "./App.css";
 
 function App() {
   const [city, setCity] = useState("");
   const [weatherData, setWeatherData] = useState(null);
   const [forecastData, setForecastData] = useState([]);
+  const [recentCities, setRecentCities] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -20,19 +21,19 @@ function App() {
     event.preventDefault();
     setIsLoading(true);
     setError(null);
-  
+
     fetch(`http://localhost:3001/current-weather/${city}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Failed to fetch weather data."); // Set specific error message
+          throw new Error("Failed to fetch weather data.");
         }
         return response.json();
       })
       .then((data) => {
         if (!data.main || !data.main.temp || !data.wind || !data.wind.speed) {
-          throw new Error("Failed to fetch weather data."); // Check for required properties
+          throw new Error("Failed to fetch weather data.");
         }
-  
+
         const temperatureInKelvin = data.main.temp;
         const temperatureInFahrenheit = convertKelvinToFahrenheit(temperatureInKelvin).toFixed(2);
         setWeatherData({
@@ -45,7 +46,7 @@ function App() {
         console.log(error);
         setError(error.message);
       });
-  
+
     fetch(`http://localhost:3001/five-weather/${city}`)
       .then((response) => {
         if (!response.ok) {
@@ -54,8 +55,12 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        const filteredForecastData = data.list.filter((forecast) => forecast.dt_txt.includes("12:00:00"));
+        const { weatherForecast, recentCities } = data;
+        const filteredForecastData = weatherForecast.list.filter((forecast) =>
+          forecast.dt_txt.includes("12:00:00")
+        );
         setForecastData(filteredForecastData);
+        setRecentCities(recentCities);
       })
       .catch((error) => {
         console.log(error);
@@ -65,9 +70,17 @@ function App() {
         setIsLoading(false);
       });
   }
-  
-  
 
+  useEffect(() => {
+    fetch("http://localhost:3001/recent-cities")
+      .then((response) => response.json())
+      .then((data) => {
+        setRecentCities(data);
+      })
+      .catch((error) => {
+        console.error("Failed to fetch recent cities:", error);
+      });
+  }, []);
   return (
     <div className="App">
       <div className="weather-app-heading">Weather App</div>
@@ -90,7 +103,7 @@ function App() {
       )}
       {forecastData.length > 0 && (
         <div>
-          <div className= 'five-day-header'>5-Day Weather Forecast</div>
+          <div className="five-day-header">5-Day Weather Forecast</div>
           <div className="five-day">
             {forecastData.map((forecast) => (
               <div key={forecast.dt}>
@@ -101,8 +114,21 @@ function App() {
           </div>
         </div>
       )}
+      {recentCities.length > 0 && (
+        <div>
+          <div className="recent-cities-header">Recently Searched Cities</div>
+          <div className="recent-cities">
+            {recentCities.map((city) => (
+              <div key={city._id}>
+                <div>City: {city.city}</div>
+                <div>Searched At: {new Date(city.createdAt).toLocaleString()}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-export default App
+export default App; 

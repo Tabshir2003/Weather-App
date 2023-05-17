@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 const PORT = 3001;
-const uri = "mongodb+srv://web-dev:web-dev@weather-app.03nzmks.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://web-dev:web-dev@weather-app.03nzmks.mongodb.net/RecentCity?retryWrites=true&w=majority"; // Updated URI with database name
 
 // Connect to MongoDB
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -31,12 +31,18 @@ mongoose.connection.on('disconnected', () => {
   console.log('MongoDB disconnected');
 });
 
-// This is your root route. Just to used to ensure your ExpressJS server is up and running.
+const recentCitySchema = new mongoose.Schema({
+  city: {
+    type: String,
+    required: true,
+  },
+}, { timestamps: true });
+
+const RecentCity = mongoose.model('RecentCity', recentCitySchema, 'RecentCity'); // Updated model with collection name
+
 app.get('/', (req, res) => {
   fetch('https://api.thecatapi.com/v1/images/search')
-    // This takes the raw response from the fetch promise and parses it to JSON data format.
     .then(response => response.json())
-    // And then takes THAT promise and does things with the JSON data.
     .then(data => {
       res.send(`
         <!DOCTYPE html>
@@ -61,15 +67,25 @@ app.get('/', (req, res) => {
     });
 });
 
-// GET Request to get all the JSON data retrieved by city name for CURRENT WEATHER.
-app.get('/current-weather/:city', (req, res) => {
+app.get('/current-weather/:city', async (req, res) => {
   const { city } = req.params;
   const apiKey = '406a3468740e62be7410c1adc2da1810';
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 
   fetch(url)
     .then(response => response.json())
-    .then(data => res.json(data))
+    .then(data => {
+      const recentCity = new RecentCity({ city });
+      recentCity.save()
+        .then(savedCity => {
+          console.log('Saved recent city:', savedCity);
+        })
+        .catch(error => {
+          console.error('Failed to save recent city:', error);
+        });
+
+      res.json(data);
+    })
     .catch(error => {
       console.log(error);
       res.status(500).send('Error retrieving weather data');
@@ -100,9 +116,26 @@ app.get('/five-weather/:city', async (req, res) => {
     const weatherForecast = forecastData;
     // Process the weather forecast data as needed
 
-    res.json(weatherForecast);
+    // Step 3: Fetch recent cities
+    try {
+      const recentCities = await RecentCity.find().sort({ createdAt: -1 }).limit(3);
+      res.json({ weatherForecast, recentCities });
+    } catch (error) {
+      console.error('Failed to fetch recent cities:', error);
+      res.status(500).json({ message: 'Something went wrong' });
+    }
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: 'Something went wrong' });
+  }
+});
+
+app.get('/recent-cities', async (req, res) => {
+  try {
+    const recentCities = await RecentCity.find().sort({ createdAt: -1 }).limit(3);
+    res.json(recentCities);
+  } catch (error) {
+    console.error('Failed to fetch recent cities:', error);
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
